@@ -10,10 +10,9 @@
       font-family: Arial, sans-serif;
       background-color: #fff;
       color: #000;
-      /* Để nội dung không bị footer che mất */
-      margin-bottom: 60px;
+      margin-bottom: 60px; /* Chừa chỗ cho footer cố định */
     }
-    /* Header trên cùng */
+    /* Header */
     .header {
       background-color: #720E9E; /* Màu tím Yahoo cũ */
       color: #fff;
@@ -27,13 +26,12 @@
     .header a:hover {
       text-decoration: underline;
     }
-    /* Logo hoặc tên trang */
     .logo {
       font-size: 24px;
       font-weight: bold;
       display: inline-block;
     }
-    /* Navbar dưới logo */
+    /* Navbar */
     .navbar {
       background-color: #EEE;
       padding: 5px 10px;
@@ -48,14 +46,10 @@
     .navbar a:hover {
       text-decoration: underline;
     }
-    /* Khu vực tìm kiếm chính */
+    /* Search */
     .search-area {
       text-align: center;
       padding: 20px 0;
-    }
-    .search-area form {
-      display: inline-block;
-      margin: 0 auto;
     }
     .search-area input[type="text"] {
       width: 400px;
@@ -74,7 +68,7 @@
     .search-area input[type="submit"]:hover {
       background-color: #5e0b82;
     }
-    /* Bố cục tổng thể (3 cột) bằng bảng - phong cách cũ */
+    /* Layout 3 cột */
     table.layout {
       width: 100%;
       border-spacing: 10px;
@@ -94,7 +88,7 @@
       color: #720E9E;
       margin-bottom: 5px;
     }
-    /* Footer cố định cuối màn hình, căn giữa */
+    /* Footer cố định */
     .footer {
       position: fixed;
       bottom: 0;
@@ -115,10 +109,9 @@
     .footer a:hover {
       text-decoration: underline;
     }
-
-    /* Khu vực Demo User (lưu trữ tìm kiếm) */
+    /* Demo User */
     #demoUserSection {
-      display: none; /* Ẩn mặc định, khi click Demo User sẽ hiện/ẩn */
+      display: none;
       background-color: #fff;
       border: 1px solid #ccc;
       padding: 10px;
@@ -146,13 +139,11 @@
     #searchHistory a {
       color: #720E9E;
       text-decoration: none;
-      margin-right: 8px; /* chừa khoảng trống cho nút x */
+      margin-right: 8px;
     }
     #searchHistory a:hover {
       text-decoration: underline;
     }
-
-    /* Nút x để xóa từng kết quả */
     .remove-btn {
       color: #fff;
       background-color: #720E9E;
@@ -164,6 +155,28 @@
     .remove-btn:hover {
       background-color: #5e0b82;
     }
+    /* Submenu A-Z
+       Mặc định hiển thị (display: block),
+       khi click thì ẩn (display: none), click lại thì hiện. */
+    .submenu {
+      margin-left: 20px;
+      display: block; /* bung sẵn */
+    }
+    .submenu ul {
+      list-style: none;
+      margin: 5px 0 10px 0;
+      padding-left: 0;
+    }
+    .submenu ul li {
+      margin: 3px 0;
+    }
+    .submenu a {
+      color: #720E9E;
+      text-decoration: none;
+    }
+    .submenu a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -174,22 +187,18 @@
     <span style="float:right;">
       <a href="https://mail.google.com" target="_blank">Mail</a>
       <a href="https://discord.com" target="_blank">Messenger</a>
-      <!-- Click vào đây sẽ mở khung Demo User -->
       <a href="#" onclick="toggleDemoUser(event)">Demo User</a>
     </span>
   </div>
 
-  <!-- Khu vực ẩn/hiện của Demo User -->
+  <!-- Demo User Section -->
   <div id="demoUserSection">
     <h3>Lịch sử tìm kiếm
-      <!-- Nút xóa hết -->
       <button onclick="deleteAllHistory()" style="float:right; font-size:12px; cursor:pointer;">
         Delete All
       </button>
     </h3>
-    <ul id="searchHistory">
-      <!-- Các kết quả tìm kiếm sẽ hiển thị ở đây -->
-    </ul>
+    <ul id="searchHistory"></ul>
   </div>
 
   <!-- Navbar -->
@@ -202,16 +211,15 @@
     <a href="https://www.bing.com/search?q=weather" target="_blank">Thời tiết</a>
   </div>
 
-  <!-- Khu vực tìm kiếm -->
+  <!-- Search -->
   <div class="search-area">
-    <!-- Thay vì action Google, ta sẽ dùng JavaScript để lưu trữ và mở tab -->
     <form onsubmit="handleSearch(event)">
       <input type="text" id="searchInput" placeholder="Nhập từ khóa cần tìm...">
       <input type="submit" value="Tìm kiếm">
     </form>
   </div>
 
-  <!-- Bố cục tổng thể (3 cột) -->
+  <!-- Layout 3 cột -->
   <table class="layout">
     <tr>
       <!-- Cột trái -->
@@ -219,14 +227,725 @@
         <div class="left-col">
           <div class="section-title">Danh mục</div>
           <ul>
-            <!-- Thời sự: random link giữa CBS, CNN, VTV -->
             <li><a href="#" onclick="openRandomThoiSu(event)">Thời sự</a></li>
-            <!-- Kinh doanh -> Yahoo! Finance -->
             <li><a href="https://finance.yahoo.com" target="_blank">Kinh doanh</a></li>
-            <!-- Giải trí -> YouTube -->
             <li><a href="https://www.youtube.com" target="_blank">Giải trí</a></li>
-            <!-- Công nghệ -> ChatGPT (sửa link cho đúng) -->
             <li><a href="https://www.chatgpt.com" target="_blank">Công nghệ</a></li>
+          </ul>
+
+          <div class="section-title" style="margin-top: 20px;">All Services</div>
+          <ul>
+            <!-- A -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuA'); return false;">A</a>
+              <div id="submenuA" class="submenu">
+                <ul>
+                  <li><strong>Account Information</strong>
+                    <ul>
+                      <li><a href="https://myaccount.google.com" target="_blank">Google Account</a></li>
+                      <li><a href="https://account.microsoft.com" target="_blank">Microsoft Account</a></li>
+                      <li><a href="https://appleid.apple.com" target="_blank">Apple ID</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Address Book</strong>
+                    <ul>
+                      <li><a href="https://contacts.google.com" target="_blank">Google Contacts</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Advertise with Us</strong>
+                    <ul>
+                      <li><a href="https://ads.google.com" target="_blank">Google Ads</a></li>
+                      <li><a href="https://business.facebook.com" target="_blank">Meta Ads</a></li>
+                      <li><a href="https://ads.microsoft.com" target="_blank">Microsoft Ads</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Alerts</strong>
+                    <ul>
+                      <li><a href="https://www.google.com/alerts" target="_blank">Google Alerts</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Answers</strong>
+                    <ul>
+                      <li><a href="https://www.reddit.com" target="_blank">Reddit</a></li>
+                      <li><a href="https://www.quora.com" target="_blank">Quora</a></li>
+                      <li><a href="https://stackoverflow.com" target="_blank">StackExchange</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Autos</strong>
+                    <ul>
+                      <li><a href="https://www.cargurus.com" target="_blank">CarGurus</a></li>
+                      <li><a href="https://www.autotrader.com" target="_blank">AutoTrader</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Avatars</strong>
+                    <ul>
+                      <li><a href="https://www.gravatar.com" target="_blank">Gravatar</a></li>
+                      <li><a href="https://www.bitmoji.com" target="_blank">Bitmoji</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- B -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuB'); return false;">B</a>
+              <div id="submenuB" class="submenu">
+                <ul>
+                  <li><strong>Buzz</strong>
+                    <ul>
+                      <li><a href="https://twitter.com" target="_blank">X (Twitter)</a></li>
+                      <li><a href="https://www.threads.net" target="_blank">Threads</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- C -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuC'); return false;">C</a>
+              <div id="submenuC" class="submenu">
+                <ul>
+                  <li><strong>Calendar</strong>
+                    <ul>
+                      <li><a href="https://calendar.google.com" target="_blank">Google Calendar</a></li>
+                      <li><a href="https://outlook.live.com/calendar/" target="_blank">Microsoft Outlook</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Chat</strong>
+                    <ul>
+                      <li><a href="https://discord.com" target="_blank">Discord</a></li>
+                      <li><a href="https://telegram.org" target="_blank">Telegram</a></li>
+                      <li><a href="https://www.messenger.com" target="_blank">Messenger</a></li>
+                      <li><a href="https://web.whatsapp.com" target="_blank">WhatsApp</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Company Info</strong>
+                    <ul>
+                      <li><a href="https://www.crunchbase.com" target="_blank">Crunchbase</a></li>
+                      <li><a href="https://www.linkedin.com" target="_blank">LinkedIn</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Connected TV</strong>
+                    <ul>
+                      <li><a href="https://channelstore.roku.com" target="_blank">Roku</a></li>
+                      <li><a href="https://www.samsung.com/us/apps/samsung-tv-plus/" target="_blank">Samsung TV Plus</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- D -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuD'); return false;">D</a>
+              <div id="submenuD" class="submenu">
+                <ul>
+                  <li><strong>Dating</strong>
+                    <ul>
+                      <li><a href="https://tinder.com" target="_blank">Tinder</a></li>
+                      <li><a href="https://bumble.com" target="_blank">Bumble</a></li>
+                      <li><a href="https://www.okcupid.com" target="_blank">OkCupid</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Deals</strong>
+                    <ul>
+                      <li><a href="https://www.groupon.com" target="_blank">Groupon</a></li>
+                      <li><a href="https://www.retailmenot.com" target="_blank">RetailMeNot</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Delicious (Bookmark)</strong>
+                    <ul>
+                      <li><a href="https://getpocket.com" target="_blank">Pocket</a></li>
+                      <li><a href="https://raindrop.io" target="_blank">Raindrop.io</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Developer Network</strong>
+                    <ul>
+                      <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                      <li><a href="https://stackoverflow.com" target="_blank">Stack Overflow</a></li>
+                      <li><a href="https://dev.to" target="_blank">Dev.to</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Directions</strong>
+                    <ul>
+                      <li><a href="https://maps.google.com" target="_blank">Google Maps</a></li>
+                      <li><a href="https://maps.apple.com" target="_blank">Apple Maps</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Directory</strong>
+                    <ul>
+                      <li>Dmoz đã đóng cửa, thay thế bằng <a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Domains</strong>
+                    <ul>
+                      <li><a href="https://domains.google" target="_blank">Google Domains</a></li>
+                      <li><a href="https://www.godaddy.com" target="_blank">GoDaddy</a></li>
+                      <li><a href="https://www.namecheap.com" target="_blank">Namecheap</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- E -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuE'); return false;">E</a>
+              <div id="submenuE" class="submenu">
+                <ul>
+                  <li><strong>Ecards</strong>
+                    <ul>
+                      <li><a href="https://www.canva.com" target="_blank">Canva</a></li>
+                      <li><a href="https://www.paperlesspost.com" target="_blank">Paperless Post</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Education</strong>
+                    <ul>
+                      <li><a href="https://www.khanacademy.org" target="_blank">Khan Academy</a></li>
+                      <li><a href="https://www.coursera.org" target="_blank">Coursera</a></li>
+                      <li><a href="https://www.udemy.com" target="_blank">Udemy</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Entertainment</strong>
+                    <ul>
+                      <li><a href="https://www.netflix.com" target="_blank">Netflix</a></li>
+                      <li><a href="https://www.disneyplus.com" target="_blank">Disney+</a></li>
+                      <li><a href="https://www.hulu.com" target="_blank">Hulu</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- F -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuF'); return false;">F</a>
+              <div id="submenuF" class="submenu">
+                <ul>
+                  <li><strong>Fantasy Sports</strong>
+                    <ul>
+                      <li><a href="https://www.espn.com/fantasy" target="_blank">ESPN Fantasy</a></li>
+                      <li><a href="https://sports.yahoo.com/fantasy" target="_blank">Yahoo Fantasy Sports</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Finance</strong>
+                    <ul>
+                      <li><a href="https://www.google.com/finance" target="_blank">Google Finance</a></li>
+                      <li><a href="https://www.bloomberg.com" target="_blank">Bloomberg</a></li>
+                      <li><a href="https://www.investing.com" target="_blank">Investing.com</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Flickr</strong>
+                    <ul>
+                      <li><a href="https://photos.google.com" target="_blank">Google Photos</a></li>
+                      <li><a href="https://500px.com" target="_blank">500px</a></li>
+                      <li><a href="https://www.smugmug.com" target="_blank">SmugMug</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- G -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuG'); return false;">G</a>
+              <div id="submenuG" class="submenu">
+                <ul>
+                  <li><strong>Games</strong>
+                    <ul>
+                      <li><a href="https://store.steampowered.com" target="_blank">Steam</a></li>
+                      <li><a href="https://www.xbox.com" target="_blank">Xbox</a></li>
+                      <li><a href="https://www.playstation.com" target="_blank">PlayStation Network</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Green</strong>
+                    <ul>
+                      <li><a href="https://www.treehugger.com" target="_blank">Treehugger</a></li>
+                      <li><a href="https://www.nationalgeographic.com" target="_blank">National Geographic</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Greetings</strong>
+                    <ul>
+                      <li><a href="https://www.hallmark.com" target="_blank">Hallmark</a></li>
+                      <li><a href="https://www.bluemountain.com" target="_blank">Blue Mountain</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Groups</strong>
+                    <ul>
+                      <li><a href="https://www.facebook.com/groups" target="_blank">Facebook Groups</a></li>
+                      <li><a href="https://www.reddit.com" target="_blank">Reddit Communities</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- H -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuH'); return false;">H</a>
+              <div id="submenuH" class="submenu">
+                <ul>
+                  <li><strong>Health</strong>
+                    <ul>
+                      <li><a href="https://www.webmd.com" target="_blank">WebMD</a></li>
+                      <li><a href="https://www.mayoclinic.org" target="_blank">Mayo Clinic</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Help</strong>
+                    <ul>
+                      <li><a href="https://www.zendesk.com" target="_blank">Zendesk</a></li>
+                      <li><a href="https://www.freshworks.com/freshdesk/" target="_blank">Freshdesk</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Holiday Events</strong>
+                    <ul>
+                      <li><a href="https://www.eventbrite.com" target="_blank">Eventbrite</a></li>
+                      <li><a href="https://www.facebook.com/events" target="_blank">Facebook Events</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Horoscopes</strong>
+                    <ul>
+                      <li><a href="https://www.astrology.com" target="_blank">Astrology.com</a></li>
+                      <li><a href="https://cafeastrology.com" target="_blank">Café Astrology</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>HotJobs</strong>
+                    <ul>
+                      <li><a href="https://www.linkedin.com/jobs" target="_blank">LinkedIn Jobs</a></li>
+                      <li><a href="https://www.indeed.com" target="_blank">Indeed</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- I -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuI'); return false;">I</a>
+              <div id="submenuI" class="submenu">
+                <ul>
+                  <li><strong>Image Search</strong>
+                    <ul>
+                      <li><a href="https://images.google.com" target="_blank">Google Images</a></li>
+                      <li><a href="https://www.bing.com/images" target="_blank">Bing Images</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>International</strong>
+                    <ul>
+                      <li><a href="https://www.bbc.com" target="_blank">BBC</a></li>
+                      <li><a href="https://edition.cnn.com" target="_blank">CNN</a></li>
+                      <li><a href="https://www.reuters.com" target="_blank">Reuters</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- K -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuK'); return false;">K</a>
+              <div id="submenuK" class="submenu">
+                <ul>
+                  <li><strong>Kids</strong>
+                    <ul>
+                      <li><a href="https://www.youtubekids.com" target="_blank">YouTube Kids</a></li>
+                      <li><a href="https://pbskids.org" target="_blank">PBS Kids</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- L -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuL'); return false;">L</a>
+              <div id="submenuL" class="submenu">
+                <ul>
+                  <li><strong>Local</strong>
+                    <ul>
+                      <li><a href="https://maps.google.com" target="_blank">Google Local</a></li>
+                      <li><a href="https://www.yelp.com" target="_blank">Yelp</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- M -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuM'); return false;">M</a>
+              <div id="submenuM" class="submenu">
+                <ul>
+                  <li><strong>Mail</strong>
+                    <ul>
+                      <li><a href="https://mail.google.com" target="_blank">Gmail</a></li>
+                      <li><a href="https://outlook.live.com" target="_blank">Outlook</a></li>
+                      <li><a href="https://proton.me/mail" target="_blank">ProtonMail</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Maps</strong>
+                    <ul>
+                      <li><a href="https://maps.google.com" target="_blank">Google Maps</a></li>
+                      <li><a href="https://maps.apple.com" target="_blank">Apple Maps</a></li>
+                      <li><a href="https://www.openstreetmap.org" target="_blank">OpenStreetMap</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Message Boards</strong>
+                    <ul>
+                      <li><a href="https://www.reddit.com" target="_blank">Reddit</a></li>
+                      <li><a href="https://www.quora.com" target="_blank">Quora</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Messenger</strong>
+                    <ul>
+                      <li><a href="https://web.whatsapp.com" target="_blank">WhatsApp</a></li>
+                      <li><a href="https://telegram.org" target="_blank">Telegram</a></li>
+                      <li><a href="https://discord.com" target="_blank">Discord</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Mobile</strong>
+                    <ul>
+                      <li><a href="https://www.android.com" target="_blank">Android</a></li>
+                      <li><a href="https://www.apple.com/ios" target="_blank">iOS</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Movies</strong>
+                    <ul>
+                      <li><a href="https://www.imdb.com" target="_blank">IMDb</a></li>
+                      <li><a href="https://www.rottentomatoes.com" target="_blank">Rotten Tomatoes</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Music</strong>
+                    <ul>
+                      <li><a href="https://open.spotify.com" target="_blank">Spotify</a></li>
+                      <li><a href="https://music.apple.com" target="_blank">Apple Music</a></li>
+                      <li><a href="https://music.youtube.com" target="_blank">YouTube Music</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>MyBlogLog</strong>
+                    <ul>
+                      <li><a href="https://wordpress.com" target="_blank">WordPress</a></li>
+                      <li><a href="https://medium.com" target="_blank">Medium</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>My Yahoo!</strong>
+                    <ul>
+                      <li><a href="https://www.google.com/discover" target="_blank">Google Discover</a></li>
+                      <li><a href="https://www.msn.com" target="_blank">Microsoft Start</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- N -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuN'); return false;">N</a>
+              <div id="submenuN" class="submenu">
+                <ul>
+                  <li><strong>News</strong>
+                    <ul>
+                      <li><a href="https://news.google.com" target="_blank">Google News</a></li>
+                      <li><a href="https://edition.cnn.com" target="_blank">CNN</a></li>
+                      <li><a href="https://www.bbc.com/news" target="_blank">BBC</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>News Search</strong>
+                    <ul>
+                      <li><a href="https://news.google.com" target="_blank">Google News</a></li>
+                      <li><a href="https://www.bing.com/news" target="_blank">Bing News</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Notepad</strong>
+                    <ul>
+                      <li><a href="https://evernote.com" target="_blank">Evernote</a></li>
+                      <li><a href="https://keep.google.com" target="_blank">Google Keep</a></li>
+                      <li><a href="https://www.onenote.com" target="_blank">OneNote</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- O -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuO'); return false;">O</a>
+              <div id="submenuO" class="submenu">
+                <ul>
+                  <li><strong>OpenID</strong>
+                    <ul>
+                      <li><a href="https://myaccount.google.com" target="_blank">Google</a></li>
+                      <li><a href="https://appleid.apple.com" target="_blank">Apple</a></li>
+                      <li><a href="https://account.microsoft.com" target="_blank">Microsoft Login</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>omg!</strong>
+                    <ul>
+                      <li><a href="https://www.tmz.com" target="_blank">TMZ</a></li>
+                      <li><a href="https://www.buzzfeed.com" target="_blank">BuzzFeed</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- P -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuP'); return false;">P</a>
+              <div id="submenuP" class="submenu">
+                <ul>
+                  <li><strong>People Search</strong>
+                    <ul>
+                      <li><a href="https://www.whitepages.com" target="_blank">Whitepages</a></li>
+                      <li><a href="https://www.spokeo.com" target="_blank">Spokeo</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Pipes (RSS)</strong>
+                    <ul>
+                      <li><a href="https://feedly.com" target="_blank">Feedly</a></li>
+                      <li><a href="https://www.inoreader.com" target="_blank">Inoreader</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Pride</strong>
+                    <ul>
+                      <li><a href="https://www.thetrevorproject.org" target="_blank">The Trevor Project</a></li>
+                      <li><a href="https://www.glaad.org" target="_blank">GLAAD</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Publisher Network</strong>
+                    <ul>
+                      <li><a href="https://adsense.google.com" target="_blank">Google AdSense</a></li>
+                      <li><a href="https://www.mediavine.com" target="_blank">Mediavine</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Pulse</strong>
+                    <ul>
+                      <li><a href="https://www.linkedin.com/news" target="_blank">LinkedIn News</a></li>
+                      <li><a href="https://flipboard.com" target="_blank">Flipboard</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- R -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuR'); return false;">R</a>
+              <div id="submenuR" class="submenu">
+                <ul>
+                  <li><strong>Real Estate</strong>
+                    <ul>
+                      <li><a href="https://www.zillow.com" target="_blank">Zillow</a></li>
+                      <li><a href="https://www.realtor.com" target="_blank">Realtor.com</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Reference</strong>
+                    <ul>
+                      <li><a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
+                      <li><a href="https://www.britannica.com" target="_blank">Britannica</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- S -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuS'); return false;">S</a>
+              <div id="submenuS" class="submenu">
+                <ul>
+                  <li><strong>Safely</strong>
+                    <ul>
+                      <li><a href="https://www.commonsense.org" target="_blank">Common Sense Media</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Search</strong>
+                    <ul>
+                      <li><a href="https://www.google.com" target="_blank">Google Search</a></li>
+                      <li><a href="https://www.bing.com" target="_blank">Bing</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Search Marketing</strong>
+                    <ul>
+                      <li><a href="https://ads.google.com" target="_blank">Google Ads</a></li>
+                      <li><a href="https://ads.microsoft.com" target="_blank">Microsoft Ads</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Security Center</strong>
+                    <ul>
+                      <li><a href="https://safety.google" target="_blank">Google Security</a></li>
+                      <li><a href="https://us.norton.com" target="_blank">Norton</a></li>
+                      <li><a href="https://www.kaspersky.com" target="_blank">Kaspersky</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Shine (Lifestyle)</strong>
+                    <ul>
+                      <li><a href="https://www.buzzfeed.com" target="_blank">BuzzFeed</a></li>
+                      <li><a href="https://www.refinery29.com" target="_blank">Refinery29</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Shopping</strong>
+                    <ul>
+                      <li><a href="https://www.amazon.com" target="_blank">Amazon</a></li>
+                      <li><a href="https://www.ebay.com" target="_blank">eBay</a></li>
+                      <li><a href="https://www.google.com/shopping" target="_blank">Google Shopping</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Small Business</strong>
+                    <ul>
+                      <li><a href="https://www.shopify.com" target="_blank">Shopify</a></li>
+                      <li><a href="https://www.wix.com" target="_blank">Wix</a></li>
+                      <li><a href="https://www.squarespace.com" target="_blank">Squarespace</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Sports</strong>
+                    <ul>
+                      <li><a href="https://www.espn.com" target="_blank">ESPN</a></li>
+                      <li><a href="https://sports.yahoo.com" target="_blank">Yahoo Sports</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- T -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuT'); return false;">T</a>
+              <div id="submenuT" class="submenu">
+                <ul>
+                  <li><strong>TV</strong>
+                    <ul>
+                      <li><a href="https://www.netflix.com" target="_blank">Netflix</a></li>
+                      <li><a href="https://www.hulu.com" target="_blank">Hulu</a></li>
+                      <li><a href="https://pluto.tv" target="_blank">Pluto TV</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Toolbar</strong>
+                    <ul>
+                      <li>Google Toolbar (ngày xưa, giờ đã khai tử)</li>
+                    </ul>
+                  </li>
+                  <li><strong>Travel</strong>
+                    <ul>
+                      <li><a href="https://www.google.com/travel" target="_blank">Google Flights</a></li>
+                      <li><a href="https://www.expedia.com" target="_blank">Expedia</a></li>
+                      <li><a href="https://www.agoda.com" target="_blank">Agoda</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- U -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuU'); return false;">U</a>
+              <div id="submenuU" class="submenu">
+                <ul>
+                  <li><strong>Upcoming</strong>
+                    <ul>
+                      <li><a href="https://www.eventbrite.com" target="_blank">Eventbrite</a></li>
+                      <li><a href="https://www.facebook.com/events" target="_blank">Facebook Events</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- V -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuV'); return false;">V</a>
+              <div id="submenuV" class="submenu">
+                <ul>
+                  <li><strong>Video</strong>
+                    <ul>
+                      <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                      <li><a href="https://www.tiktok.com" target="_blank">TikTok</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Voice</strong>
+                    <ul>
+                      <li><a href="https://assistant.google.com" target="_blank">Google Assistant</a></li>
+                      <li><a href="https://alexa.amazon.com" target="_blank">Alexa</a></li>
+                      <li><a href="https://www.apple.com/siri" target="_blank">Siri</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- W -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuW'); return false;">W</a>
+              <div id="submenuW" class="submenu">
+                <ul>
+                  <li><strong>Weather</strong>
+                    <ul>
+                      <li><a href="https://weather.com" target="_blank">Weather.com</a></li>
+                      <li><a href="https://www.accuweather.com" target="_blank">AccuWeather</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Web Hosting</strong>
+                    <ul>
+                      <li><a href="https://www.bluehost.com" target="_blank">Bluehost</a></li>
+                      <li><a href="https://www.siteground.com" target="_blank">SiteGround</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Widgets</strong>
+                    <ul>
+                      <li>iOS, Android, Windows Widgets</li>
+                    </ul>
+                  </li>
+                  <li><strong>Wireless</strong>
+                    <ul>
+                      <li><a href="https://www.t-mobile.com" target="_blank">T-Mobile</a></li>
+                      <li><a href="https://www.verizon.com" target="_blank">Verizon</a></li>
+                      <li><a href="https://www.att.com" target="_blank">AT&T</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Women</strong>
+                    <ul>
+                      <li><a href="https://www.womenshealthmag.com" target="_blank">Women’s Health</a></li>
+                      <li><a href="https://www.thecut.com" target="_blank">The Cut</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Y -->
+            <li>
+              <a href="#" onclick="toggleSubmenu('submenuY'); return false;">Y</a>
+              <div id="submenuY" class="submenu">
+                <ul>
+                  <li><strong>Yahoo! Search Blog</strong>
+                    <ul>
+                      <li><a href="https://developers.google.com/search" target="_blank">Google Search Central</a></li>
+                      <li><a href="https://blogs.bing.com" target="_blank">Bing Blog</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Yahoo! en Español</strong>
+                    <ul>
+                      <li><a href="https://news.google.com/?hl=es" target="_blank">Google Noticias en Español</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Yahoo! for Good</strong>
+                    <ul>
+                      <li><a href="https://google.org" target="_blank">Google.org</a></li>
+                      <li><a href="https://www.gatesfoundation.org" target="_blank">Gates Foundation</a></li>
+                    </ul>
+                  </li>
+                  <li><strong>Year in Review (2009)</strong>
+                    <ul>
+                      <li><a href="https://trends.google.com/trends/yis/2019" target="_blank">Google Year in Search</a></li>
+                      <li><a href="https://www.youtube.com/playlist?list=PLbpi6ZahtOH6K07FCE17cw3RfQNmODTWC" target="_blank">YouTube Rewind (đã dừng)</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- Hết A-Z -->
           </ul>
         </div>
       </td>
@@ -237,21 +956,18 @@
           <div class="section-title">Tin nóng</div>
           <ul>
             <li>
-              <a href="https://www.msn.com/vi-vn/entertainment/news/nguyên-gđ-nhà-hát-chèo-nói-về-xuân-hinh-rap-trong-bắc-bling/ar-AA1Ax5j8?ocid=BingHp01" 
-                 target="_blank">
-                 Nguyên GĐ Nhà hát Chèo nói về Xuân Hinh rap trong Bắc Bling
+              <a href="https://www.msn.com/vi-vn/entertainment/news/nguyên-gđ-nhà-hát-chèo-nói-về-xuân-hinh-rap-trong-bắc-bling/ar-AA1Ax5j8?ocid=BingHp01" target="_blank">
+                Nguyên GĐ Nhà hát Chèo nói về Xuân Hinh rap trong Bắc Bling
               </a>
             </li>
             <li>
-              <a href="https://www.msn.com/vi-vn/news/national/khánh-thành-metro-số-1-tp-hcm-bước-vào-kỷ-nguyên-giao-thông-mới/ar-AA1Ax0T2?ocid=BingHp01" 
-                 target="_blank">
-                 Khánh thành metro số 1, TP.HCM bước vào kỷ nguyên giao thông mới
+              <a href="https://www.msn.com/vi-vn/news/national/khánh-thành-metro-số-1-tp-hcm-bước-vào-kỷ-nguyên-giao-thông-mới/ar-AA1Ax0T2?ocid=BingHp01" target="_blank">
+                Khánh thành metro số 1, TP.HCM bước vào kỷ nguyên giao thông mới
               </a>
             </li>
             <li>
-              <a href="https://www.msn.com/vi-vn/news/other/chủ-tịch-nguyễn-văn-được-nhất-định-tp-hcm-sẽ-hoàn-thành-đầu-tư-đồng-bộ-đường-sắt-đô-thị/ar-AA1Axe3U?ocid=BingHp01" 
-                 target="_blank">
-                 Chủ tịch Nguyễn Văn Được: 'Nhất định TP.HCM sẽ hoàn thành đầu tư đồng bộ đường sắt đô thị'
+              <a href="https://www.msn.com/vi-vn/news/other/chủ-tịch-nguyễn-văn-được-nhất-định-tp-hcm-sẽ-hoàn-thành-đầu-tư-đồng-bộ-đường-sắt-đô-thị/ar-AA1Axe3U?ocid=BingHp01" target="_blank">
+                Chủ tịch Nguyễn Văn Được: 'Nhất định TP.HCM sẽ hoàn thành đầu tư đồng bộ đường sắt đô thị'
               </a>
             </li>
           </ul>
@@ -268,18 +984,16 @@
             <li><a href="https://play.geforcenow.com/mall/#/layout/games" target="_blank">Geforce Now</a></li>
           </ul>
           <div class="section-title" style="margin-top: 20px;">Quảng cáo</div>
-          <!-- Đoạn text quảng cáo sẽ được thay đổi ngẫu nhiên khi load trang -->
           <p id="adText">...</p>
         </div>
       </td>
     </tr>
   </table>
 
-  <!-- Footer cố định cuối màn hình -->
+  <!-- Footer -->
   <div class="footer">
-    <p>&copy; 2025 MeGroup. All rights reserved.</p>
+    <p>&copy; 2025 Askme Platform. All rights reserved.</p>
     <p>
-      <!-- Thay các link thành onclick alert -->
       <a href="#" onclick="showPrivacyPolicy(event)">Privacy Policy</a> | 
       <a href="#" onclick="showTerms(event)">Terms of Service</a> | 
       <a href="#" onclick="showHelp(event)">Help</a>
@@ -288,25 +1002,24 @@
 
   <!-- JavaScript -->
   <script>
-    // ====== Quảng cáo ngẫu nhiên mỗi lần tải trang ======
+    // Quảng cáo ngẫu nhiên
     var ads = [
       "Hãy thử ngay các dịch vụ mà chúng tôi có!!",
       "Discord Messenger là dịch vụ bạn không thể thiếu!",
       "Google là nền tảng số 1 tìm kiếm về lượng thông tin nó có.",
       "ChatGPT là dịch vụ AI miễn phí mà bạn nên thử qua.",
       "Bạn có biết Demo User chỉ có lịch sử tìm kiếm của bạn?",
-	  "Askme Search đang chạy trên Github Pages!",
-	  "Yahoo! là bản năng thứ 2 của người dùng internet... chắc vậy.",
-	  "Chúng tôi không thu thập dữ liệu... nhưng bên thứ ba thì chưa nói trước được.",
-	  "Askme Search - Là công cụ tiên tiến chạy trên Google"
+      "Askme Search đang chạy trên Github Pages!",
+      "Yahoo! là bản năng thứ 2 của người dùng internet... chắc vậy.",
+      "Chúng tôi không thu thập dữ liệu... nhưng bên thứ ba thì chưa nói trước được.",
+      "Askme Search - Là công cụ tiên tiến chạy trên Google"
     ];
-    // Chọn ngẫu nhiên 1 trong 5
-    var randomAd = ads[Math.floor(Math.random() * ads.length)];
     document.addEventListener("DOMContentLoaded", function() {
+      var randomAd = ads[Math.floor(Math.random() * ads.length)];
       document.getElementById("adText").textContent = randomAd;
     });
 
-    // ====== Mở link ngẫu nhiên cho Thời sự ======
+    // Random link Thời sự
     function openRandomThoiSu(event) {
       event.preventDefault();
       var links = [
@@ -318,41 +1031,35 @@
       window.open(randomLink, "_blank");
     }
 
-    // ====== Ẩn/hiện khu vực Demo User ======
+    // Toggle Demo User
     function toggleDemoUser(event) {
       event.preventDefault();
       var section = document.getElementById("demoUserSection");
-      if (section.style.display === "none") {
+      if (section.style.display === "none" || section.style.display === "") {
         section.style.display = "block";
       } else {
         section.style.display = "none";
       }
     }
 
-    // ====== Xử lý form tìm kiếm, lưu vào "Demo User" + mở tab Google ======
+    // Xử lý tìm kiếm, lưu vào Demo User
     function handleSearch(e) {
       e.preventDefault();
       var input = document.getElementById("searchInput");
       var query = input.value.trim();
       if (!query) return;
 
-      // Mở tab mới đến Google
       var googleURL = "https://www.google.com/search?q=" + encodeURIComponent(query);
       window.open(googleURL, "_blank");
 
-      // Lưu truy vấn vào khu vực "Demo User"
       var historyList = document.getElementById("searchHistory");
       var li = document.createElement("li");
-
-      // Tạo link dẫn đến kết quả Google
       var link = document.createElement("a");
       link.href = googleURL;
       link.target = "_blank";
       link.textContent = query;
-
       li.appendChild(link);
 
-      // Tạo nút x để xóa từng item
       var removeBtn = document.createElement("button");
       removeBtn.textContent = "x";
       removeBtn.className = "remove-btn";
@@ -362,35 +1069,41 @@
       li.appendChild(removeBtn);
 
       historyList.appendChild(li);
-
-      // Xóa nội dung input sau khi tìm
       input.value = "";
     }
 
-    // ====== Nút "Delete All" ======
+    // Delete all history
     function deleteAllHistory() {
-      var historyList = document.getElementById("searchHistory");
-      historyList.innerHTML = ""; // Xóa toàn bộ kết quả tìm kiếm
+      document.getElementById("searchHistory").innerHTML = "";
     }
 
-    // ====== Thông báo khi nhấn Privacy Policy ======
+    // Thông báo Privacy
     function showPrivacyPolicy(event) {
       event.preventDefault();
       alert("Chúng tôi không ghi nhận bất cứ dữ liệu gì của bạn, mọi dữ liệu sẽ chỉ lưu trên HTML mà không về bất cứ server nào.");
     }
 
-    // ====== Thông báo khi nhấn Terms of Service ======
+    // Thông báo Terms
     function showTerms(event) {
       event.preventDefault();
-      alert("Các dịch vụ bạn đang sử dụng trên đây được điều hướng về OpenAI, Google, Yahoo!, CNN, CBS, Olymics, Agoda, Nvidia, Discord, Youtube, VTV, MSN. Hãy tham khảo bảo mật của họ, việc bạn sử dụng dịch vụ là bạn đang đồng ý với điều khoản dịch vụ mà họ đề ra");
+      alert("Các dịch vụ bạn đang sử dụng trên đây được điều hướng về OpenAI, Google, Yahoo!, CNN, CBS, Olymics, Agoda, Nvidia, Discord, Youtube, VTV, MSN,... etc. Hãy tham khảo bảo mật của họ, việc bạn sử dụng dịch vụ là bạn đang đồng ý với điều khoản dịch vụ mà họ đề ra");
     }
 
-    // ====== Thông báo khi nhấn Help ======
+    // Thông báo Help
     function showHelp(event) {
       event.preventDefault();
       alert("Hãy liên hệ Bellgustudio@gmail.com");
     }
-  </script>
 
+    // Toggle submenu: bung sẵn => thu gọn khi click
+    function toggleSubmenu(id) {
+      var submenu = document.getElementById(id);
+      if (submenu.style.display === "block" || submenu.style.display === "") {
+        submenu.style.display = "none";
+      } else {
+        submenu.style.display = "block";
+      }
+    }
+  </script>
 </body>
 </html>
