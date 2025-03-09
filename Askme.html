@@ -1002,7 +1002,7 @@
 
   <!-- JavaScript -->
   <script>
-    // Quảng cáo ngẫu nhiên
+    /*==================== QUẢNG CÁO NGẪU NHIÊN ====================*/
     var ads = [
       "Hãy thử ngay các dịch vụ mà chúng tôi có!!",
       "Discord Messenger là dịch vụ bạn không thể thiếu!",
@@ -1014,12 +1014,17 @@
       "Chúng tôi không thu thập dữ liệu... nhưng bên thứ ba thì chưa nói trước được.",
       "Askme Search - Là công cụ tiên tiến chạy trên Google"
     ];
+
     document.addEventListener("DOMContentLoaded", function() {
+      // Random quảng cáo
       var randomAd = ads[Math.floor(Math.random() * ads.length)];
       document.getElementById("adText").textContent = randomAd;
+
+      // Load lịch sử tìm kiếm từ LocalStorage
+      loadHistoryFromLocalStorage();
     });
 
-    // Random link Thời sự
+    /*==================== THỜI SỰ NGẪU NHIÊN ====================*/
     function openRandomThoiSu(event) {
       event.preventDefault();
       var links = [
@@ -1031,7 +1036,10 @@
       window.open(randomLink, "_blank");
     }
 
-    // Toggle Demo User
+    /*==================== DEMO USER + LỊCH SỬ TÌM KIẾM ====================*/
+    var searchHistoryArray = [];
+
+    // Hiển thị/ẩn khung Demo User
     function toggleDemoUser(event) {
       event.preventDefault();
       var section = document.getElementById("demoUserSection");
@@ -1042,7 +1050,28 @@
       }
     }
 
-    // Xử lý tìm kiếm, lưu vào Demo User
+    // Đọc lịch sử từ LocalStorage
+    function loadHistoryFromLocalStorage() {
+      var storedData = localStorage.getItem("askmeHistory");
+      if (storedData) {
+        searchHistoryArray = JSON.parse(storedData);
+      } else {
+        searchHistoryArray = [];
+      }
+      // Hiển thị lên UI
+      var historyList = document.getElementById("searchHistory");
+      historyList.innerHTML = "";
+      searchHistoryArray.forEach(function(item) {
+        addHistoryItemToUI(item.query, item.url);
+      });
+    }
+
+    // Lưu mảng searchHistoryArray vào LocalStorage
+    function saveHistoryToLocalStorage() {
+      localStorage.setItem("askmeHistory", JSON.stringify(searchHistoryArray));
+    }
+
+    // Xử lý form tìm kiếm
     function handleSearch(e) {
       e.preventDefault();
       var input = document.getElementById("searchInput");
@@ -1052,10 +1081,27 @@
       var googleURL = "https://www.google.com/search?q=" + encodeURIComponent(query);
       window.open(googleURL, "_blank");
 
+      // Thêm vào mảng
+      var newItem = { query: query, url: googleURL };
+      searchHistoryArray.push(newItem);
+
+      // Thêm vào UI
+      addHistoryItemToUI(query, googleURL);
+
+      // Lưu LocalStorage
+      saveHistoryToLocalStorage();
+
+      // Xóa input
+      input.value = "";
+    }
+
+    // Thêm 1 item lên UI
+    function addHistoryItemToUI(query, url) {
       var historyList = document.getElementById("searchHistory");
       var li = document.createElement("li");
+
       var link = document.createElement("a");
-      link.href = googleURL;
+      link.href = url;
       link.target = "_blank";
       link.textContent = query;
       li.appendChild(link);
@@ -1064,38 +1110,45 @@
       removeBtn.textContent = "x";
       removeBtn.className = "remove-btn";
       removeBtn.onclick = function() {
+        // Tìm index của item trong mảng
+        var index = searchHistoryArray.findIndex(function(item) {
+          return item.query === query && item.url === url;
+        });
+        if (index !== -1) {
+          searchHistoryArray.splice(index, 1);
+          saveHistoryToLocalStorage();
+        }
         li.remove();
       };
       li.appendChild(removeBtn);
 
       historyList.appendChild(li);
-      input.value = "";
     }
 
-    // Delete all history
+    // Xóa hết lịch sử
     function deleteAllHistory() {
+      searchHistoryArray = [];
+      saveHistoryToLocalStorage();
       document.getElementById("searchHistory").innerHTML = "";
     }
 
-    // Thông báo Privacy
+    /*==================== THÔNG BÁO ====================*/
     function showPrivacyPolicy(event) {
       event.preventDefault();
       alert("Chúng tôi không ghi nhận bất cứ dữ liệu gì của bạn, mọi dữ liệu sẽ chỉ lưu trên HTML mà không về bất cứ server nào.");
     }
 
-    // Thông báo Terms
     function showTerms(event) {
       event.preventDefault();
       alert("Các dịch vụ bạn đang sử dụng trên đây được điều hướng về OpenAI, Google, Yahoo!, CNN, CBS, Olymics, Agoda, Nvidia, Discord, Youtube, VTV, MSN,... etc. Hãy tham khảo bảo mật của họ, việc bạn sử dụng dịch vụ là bạn đang đồng ý với điều khoản dịch vụ mà họ đề ra");
     }
 
-    // Thông báo Help
     function showHelp(event) {
       event.preventDefault();
       alert("Hãy liên hệ Bellgustudio@gmail.com");
     }
 
-    // Toggle submenu: bung sẵn => thu gọn khi click
+    // Toggle submenu (bung sẵn => thu gọn khi click)
     function toggleSubmenu(id) {
       var submenu = document.getElementById(id);
       if (submenu.style.display === "block" || submenu.style.display === "") {
