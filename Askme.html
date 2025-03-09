@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Askme Search</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      color: #000;
+      /* Để nội dung không bị footer che mất */
+      margin-bottom: 60px;
+    }
+    /* Header trên cùng */
+    .header {
+      background-color: #720E9E; /* Màu tím Yahoo cũ */
+      color: #fff;
+      padding: 10px;
+    }
+    .header a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 15px;
+    }
+    .header a:hover {
+      text-decoration: underline;
+    }
+    /* Logo hoặc tên trang */
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      display: inline-block;
+    }
+    /* Navbar dưới logo */
+    .navbar {
+      background-color: #EEE;
+      padding: 5px 10px;
+      border-bottom: 1px solid #CCC;
+    }
+    .navbar a {
+      color: #720E9E;
+      margin-right: 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+    /* Khu vực tìm kiếm chính */
+    .search-area {
+      text-align: center;
+      padding: 20px 0;
+    }
+    .search-area form {
+      display: inline-block;
+      margin: 0 auto;
+    }
+    .search-area input[type="text"] {
+      width: 400px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    .search-area input[type="submit"] {
+      padding: 8px 15px;
+      font-size: 16px;
+      background-color: #720E9E;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+    .search-area input[type="submit"]:hover {
+      background-color: #5e0b82;
+    }
+    /* Bố cục tổng thể (3 cột) bằng bảng - phong cách cũ */
+    table.layout {
+      width: 100%;
+      border-spacing: 10px;
+      margin: 10px 0;
+    }
+    table.layout td {
+      vertical-align: top;
+    }
+    .left-col, .center-col, .right-col {
+      background-color: #f9f9f9;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: bold;
+      color: #720E9E;
+      margin-bottom: 5px;
+    }
+    /* Footer cố định cuối màn hình, căn giữa */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      border-top: 1px solid #ccc;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 12px;
+      color: #555;
+    }
+    .footer a {
+      color: #720E9E;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Khu vực Demo User (lưu trữ tìm kiếm) */
+    #demoUserSection {
+      display: none; /* Ẩn mặc định, khi click Demo User sẽ hiện/ẩn */
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 300px;
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      z-index: 999;
+    }
+    #demoUserSection h3 {
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #720E9E;
+    }
+    #searchHistory {
+      list-style: none;
+      padding-left: 0;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    #searchHistory li {
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    #searchHistory a {
+      color: #720E9E;
+      text-decoration: none;
+      margin-right: 8px; /* chừa khoảng trống cho nút x */
+    }
+    #searchHistory a:hover {
+      text-decoration: underline;
+    }
+
+    /* Nút x để xóa từng kết quả */
+    .remove-btn {
+      color: #fff;
+      background-color: #720E9E;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 2px 5px;
+    }
+    .remove-btn:hover {
+      background-color: #5e0b82;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="logo">Askme</span>
+    <span style="float:right;">
+      <a href="https://mail.google.com" target="_blank">Mail</a>
+      <a href="https://discord.com" target="_blank">Messenger</a>
+      <!-- Click vào đây sẽ mở khung Demo User -->
+      <a href="#" onclick="toggleDemoUser(event)">Demo User</a>
+    </span>
+  </div>
+
+  <!-- Khu vực ẩn/hiện của Demo User -->
+  <div id="demoUserSection">
+    <h3>Lịch sử tìm kiếm
+      <!-- Nút xóa hết -->
+      <button onclick="deleteAllHistory()" style="float:right; font-size:12px; cursor:pointer;">
+        Delete All
+      </button>
+    </h3>
+    <ul id="searchHistory">
+      <!-- Các kết quả tìm kiếm sẽ hiển thị ở đây -->
+    </ul>
+  </div>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="https://www.google.com" target="_blank">Askme! Home</a>
+    <a href="https://news.google.com" target="_blank">Tin tức</a>
+    <a href="https://finance.yahoo.com" target="_blank">Tài chính</a>
+    <a href="https://www.youtube.com" target="_blank">Giải trí</a>
+    <a href="https://www.olympics.com" target="_blank">Thể thao</a>
+    <a href="https://www.bing.com/search?q=weather" target="_blank">Thời tiết</a>
+  </div>
+
+  <!-- Khu vực tìm kiếm -->
+  <div class="search-area">
+    <!-- Thay vì action Google, ta sẽ dùng JavaScript để lưu trữ và mở tab -->
+    <form onsubmit="handleSearch(event)">
+      <input type="text" id="searchInput" placeholder="Nhập từ khóa cần tìm...">
+      <input type="submit" value="Tìm kiếm">
+    </form>
+  </div>
+
+  <!-- Bố cục tổng thể (3 cột) -->
+  <table class="layout">
+    <tr>
+      <!-- Cột trái -->
+      <td width="25%">
+        <div class="left-col">
+          <div class="section-title">Danh mục</div>
+          <ul>
+            <!-- Thời sự: random link giữa CBS, CNN, VTV -->
+            <li><a href="#" onclick="openRandomThoiSu(event)">Thời sự</a></li>
+            <!-- Kinh doanh -> Yahoo! Finance -->
+            <li><a href="https://finance.yahoo.com" target="_blank">Kinh doanh</a></li>
+            <!-- Giải trí -> YouTube -->
+            <li><a href="https://www.youtube.com" target="_blank">Giải trí</a></li>
+            <!-- Công nghệ -> ChatGPT (sửa link cho đúng) -->
+            <li><a href="https://www.chatgpt.com" target="_blank">Công nghệ</a></li>
+          </ul>
+        </div>
+      </td>
+
+      <!-- Cột giữa -->
+      <td width="50%">
+        <div class="center-col">
+          <div class="section-title">Tin nóng</div>
+          <ul>
+            <li>
+              <a href="https://www.msn.com/vi-vn/entertainment/news/nguyên-gđ-nhà-hát-chèo-nói-về-xuân-hinh-rap-trong-bắc-bling/ar-AA1Ax5j8?ocid=BingHp01" 
+                 target="_blank">
+                 Nguyên GĐ Nhà hát Chèo nói về Xuân Hinh rap trong Bắc Bling
+              </a>
+            </li>
+            <li>
+              <a href="https://www.msn.com/vi-vn/news/national/khánh-thành-metro-số-1-tp-hcm-bước-vào-kỷ-nguyên-giao-thông-mới/ar-AA1Ax0T2?ocid=BingHp01" 
+                 target="_blank">
+                 Khánh thành metro số 1, TP.HCM bước vào kỷ nguyên giao thông mới
+              </a>
+            </li>
+            <li>
+              <a href="https://www.msn.com/vi-vn/news/other/chủ-tịch-nguyễn-văn-được-nhất-định-tp-hcm-sẽ-hoàn-thành-đầu-tư-đồng-bộ-đường-sắt-đô-thị/ar-AA1Axe3U?ocid=BingHp01" 
+                 target="_blank">
+                 Chủ tịch Nguyễn Văn Được: 'Nhất định TP.HCM sẽ hoàn thành đầu tư đồng bộ đường sắt đô thị'
+              </a>
+            </li>
+          </ul>
+        </div>
+      </td>
+
+      <!-- Cột phải -->
+      <td width="25%">
+        <div class="right-col">
+          <div class="section-title">Dịch vụ khác</div>
+          <ul>
+            <li><a href="https://www.agoda.com" target="_blank">Agoda</a></li>
+            <li><a href="https://finance.yahoo.com" target="_blank">Yahoo! Finance</a></li>
+            <li><a href="https://play.geforcenow.com/mall/#/layout/games" target="_blank">Geforce Now</a></li>
+          </ul>
+          <div class="section-title" style="margin-top: 20px;">Quảng cáo</div>
+          <!-- Đoạn text quảng cáo sẽ được thay đổi ngẫu nhiên khi load trang -->
+          <p id="adText">...</p>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- Footer cố định cuối màn hình -->
+  <div class="footer">
+    <p>&copy; 2025 MeGroup. All rights reserved.</p>
+    <p>
+      <!-- Thay các link thành onclick alert -->
+      <a href="#" onclick="showPrivacyPolicy(event)">Privacy Policy</a> | 
+      <a href="#" onclick="showTerms(event)">Terms of Service</a> | 
+      <a href="#" onclick="showHelp(event)">Help</a>
+    </p>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // ====== Quảng cáo ngẫu nhiên mỗi lần tải trang ======
+    var ads = [
+      "Hãy thử ngay các dịch vụ mà chúng tôi có!!",
+      "Discord Messenger là dịch vụ bạn không thể thiếu!",
+      "Google là nền tảng số 1 tìm kiếm về lượng thông tin nó có.",
+      "ChatGPT là dịch vụ AI miễn phí mà bạn nên thử qua.",
+      "Bạn có biết Demo User chỉ có lịch sử tìm kiếm của bạn?",
+	  "Askme Search đang chạy trên Github Pages!",
+	  "Yahoo! là bản năng thứ 2 của người dùng internet... chắc vậy.",
+	  "Chúng tôi không thu thập dữ liệu... nhưng bên thứ ba thì chưa nói trước được.",
+	  "Askme Search - Là công cụ tiên tiến chạy trên Google"
+    ];
+    // Chọn ngẫu nhiên 1 trong 5
+    var randomAd = ads[Math.floor(Math.random() * ads.length)];
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById("adText").textContent = randomAd;
+    });
+
+    // ====== Mở link ngẫu nhiên cho Thời sự ======
+    function openRandomThoiSu(event) {
+      event.preventDefault();
+      var links = [
+        "https://www.cbsnews.com",
+        "https://edition.cnn.com",
+        "https://vtv.vn"
+      ];
+      var randomLink = links[Math.floor(Math.random() * links.length)];
+      window.open(randomLink, "_blank");
+    }
+
+    // ====== Ẩn/hiện khu vực Demo User ======
+    function toggleDemoUser(event) {
+      event.preventDefault();
+      var section = document.getElementById("demoUserSection");
+      if (section.style.display === "none") {
+        section.style.display = "block";
+      } else {
+        section.style.display = "none";
+      }
+    }
+
+    // ====== Xử lý form tìm kiếm, lưu vào "Demo User" + mở tab Google ======
+    function handleSearch(e) {
+      e.preventDefault();
+      var input = document.getElementById("searchInput");
+      var query = input.value.trim();
+      if (!query) return;
+
+      // Mở tab mới đến Google
+      var googleURL = "https://www.google.com/search?q=" + encodeURIComponent(query);
+      window.open(googleURL, "_blank");
+
+      // Lưu truy vấn vào khu vực "Demo User"
+      var historyList = document.getElementById("searchHistory");
+      var li = document.createElement("li");
+
+      // Tạo link dẫn đến kết quả Google
+      var link = document.createElement("a");
+      link.href = googleURL;
+      link.target = "_blank";
+      link.textContent = query;
+
+      li.appendChild(link);
+
+      // Tạo nút x để xóa từng item
+      var removeBtn = document.createElement("button");
+      removeBtn.textContent = "x";
+      removeBtn.className = "remove-btn";
+      removeBtn.onclick = function() {
+        li.remove();
+      };
+      li.appendChild(removeBtn);
+
+      historyList.appendChild(li);
+
+      // Xóa nội dung input sau khi tìm
+      input.value = "";
+    }
+
+    // ====== Nút "Delete All" ======
+    function deleteAllHistory() {
+      var historyList = document.getElementById("searchHistory");
+      historyList.innerHTML = ""; // Xóa toàn bộ kết quả tìm kiếm
+    }
+
+    // ====== Thông báo khi nhấn Privacy Policy ======
+    function showPrivacyPolicy(event) {
+      event.preventDefault();
+      alert("Chúng tôi không ghi nhận bất cứ dữ liệu gì của bạn, mọi dữ liệu sẽ chỉ lưu trên HTML mà không về bất cứ server nào.");
+    }
+
+    // ====== Thông báo khi nhấn Terms of Service ======
+    function showTerms(event) {
+      event.preventDefault();
+      alert("Các dịch vụ bạn đang sử dụng trên đây được điều hướng về OpenAI, Google, Yahoo!, CNN, CBS, Olymics, Agoda, Nvidia, Discord, Youtube, VTV. Hãy tham khảo bảo mật của họ, việc bạn sử dụng dịch vụ là bạn đang đồng ý với điều khoản dịch vụ mà họ đề ra");
+    }
+
+    // ====== Thông báo khi nhấn Help ======
+    function showHelp(event) {
+      event.preventDefault();
+      alert("Hãy liên hệ Bellgustudio@gmail.com");
+    }
+  </script>
+
+</body>
+</html>
